@@ -1,7 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from taggit.managers import TaggableManager
 # Create your models here.
+
+class Category(models.Model):
+    c_name = models.CharField(_("Category Name"), max_length=80)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class CategoryTag(models.Model):
+    c_name = models.ForeignKey(Category, on_delete=models.CASCADE)
+    tag_name = models.CharField(_("Tag Name"), max_length=40)
 
 class Location(models.Model):
     image = models.FileField(upload_to='spot')
@@ -9,7 +17,7 @@ class Location(models.Model):
     l_tagline = models.CharField(_("Hotel Tagline"), max_length=150)
     l_summery = models.TextField(_("Hotel Summary"), max_length=300)
     l_description = models.TextField(_("Hotel Description"), max_length=200)
-    tags = TaggableManager()
+    tags = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

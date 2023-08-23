@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Location, Feature, Season
+from . models import Location, Feature, Season, Category, CategoryTag
 # Register your models here.
 class SeasonInline(admin.TabularInline):
     model = Season
@@ -12,7 +12,7 @@ class FeatureInline(admin.TabularInline):
 class CustomLocation(admin.ModelAdmin):
     list_display = [
         'l_name',
-        'l_tagline',
+        'tags',
     ]
     inlines = [SeasonInline]
 
@@ -30,6 +30,18 @@ class CustomFeatureAdmin(admin.ModelAdmin):
         'sf_title',
         'season',
     ]
+
+class CustomTagInline(admin.TabularInline):
+    model = CategoryTag
+    extra = 4
+
+class CustomCategory(admin.ModelAdmin):
+    list_display = [
+        'c_name'
+    ]
+    inlines = [CustomTagInline]
+
 admin.site.register(Location, CustomLocation)
 admin.site.register(Feature, CustomFeatureAdmin)
 admin.site.register(Season, CustomSeasonAdmin)
+admin.site.register(Category, CustomCategory)

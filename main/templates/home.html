@@ -11,7 +11,7 @@
     {% for tag in tags %}
       <a href="{% url 'tag' tag.id %}" 
       class="text-dark text-decoration-none border border-primary m-2 w-50 text-center">
-      {{tag.name}}</a>
+      {{tag.tag_name}}</a>
     {% endfor %}
   </div>
   <div class="row">
