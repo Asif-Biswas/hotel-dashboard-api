@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import LocationForm, SeasonForm, FeatureForm
-from .models import Location, Season, Feature
+from .models import Location, Season, Feature, Category, CategoryTag
 from django.contrib.auth.decorators import login_required
 from django_htmx.http import HttpResponseClientRedirect
 from taggit.models import Tag
@@ -10,7 +10,7 @@ from taggit.models import Tag
 @login_required
 def view_all_location(request):
     locations = Location.objects.all()
-    tags = Tag.objects.all()
+    tags = CategoryTag.objects.all()
     context = {'locations':locations, 'tags':tags}
     return render(request, "home.html", context)
 
@@ -29,7 +29,7 @@ def submit_location(request):
     if request.method == 'POST':
         form = LocationForm(request.POST, request.FILES or None)
         selected_values_str = request.POST.get('selected_values', '')
-        tags = selected_values_str.split(',')
+        print(selected_values_str)
         if form.is_valid():
             image = form.cleaned_data['image']
             name = form.cleaned_data['l_name']
@@ -42,22 +42,22 @@ def submit_location(request):
                 l_tagline = tagline,
                 l_summery = summary,
                 l_description = des,
+                tags = selected_values_str
             )
-            for tag_name in tags:
-                tag, _ =Tag.objects.get_or_create(name=tag_name)
-                location.tags.add(tag)
             return redirect('create_season', l_id = location.id)
     else:
         form = LocationForm()
         tags = Tag.objects.all()
-        context = {'location_form' : form, 'tags' : tags}
+        category_with_tags = Category.objects.prefetch_related('categorytag_set')
+        context = {'location_form' : form, 'categorys' : category_with_tags}
         return render(request, 'location_form.html', context)
 
 @login_required
 def filter_by_tag(request, tag_id):
-    tags = Tag.objects.all()
-    location = Location.objects.filter(tags=tag_id)
-    print(location)
+    gettags = CategoryTag.objects.get(pk=tag_id)
+    tags = CategoryTag.objects.all()
+    print(gettags.tag_name)
+    location = Location.objects.filter(tags__icontains=gettags.tag_name)
     context = {
         'locations':location,
         'tags':tags

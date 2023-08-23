@@ -9,14 +9,16 @@
     <form method="post" enctype="multipart/form-data" class="mt-5 d-flex" id="myForm">
         {% csrf_token %}
         <div class="py-2 my-5" style="margin-left:20px; width:250px">
-            <p class="fs-6 fw-bold mx-5">Tags:</p>
-            {% for tag in tags %}
+            {% for category in categorys %}
+            <p class="fs-6 fw-bold mx-5 my-2">{{category.c_name}}</p>
+            {% for tag in category.categorytag_set.all %}
             <div class="d-flex mx-5 align-items-conter mt-1">
                 <input class="mt-1 me-2"
                     style = "width:12px; height:12px;"
-                type="checkbox" id="{{tag.id}}" name="{{tag.name}}" value="{{tag.name}}">
-                <label class="fs-9" for="{{tag.id}}">{{tag.name}}</label>
+                type="checkbox" id="{{tag.id}}" name="{{tag.tag_name}}" value="{{tag.tag_name}}">
+                <label class="fs-9" for="{{tag.id}}">{{tag.tag_name}}</label>
             </div>
+            {% endfor %}
             {% endfor %}
         </div>
         <div class="col-8">
@@ -33,7 +35,7 @@
             {% comment %} <div class="d-flex py-2 my-3 bg-secondary text-white">
                 <p class="fs-6 fw-bold mx-5 me-5">Common Tags:</p>
                 {% for tag in tags %}
-                <p class="mx-2 fs-6 border border-danger bg-primary px-4">{{tag.name}}</p>
+                <p class="mx-2 fs-6 border border-danger bg-primary px-4">{{tag.tag_name}}</p>
                 {% endfor %}
             </div> {% endcomment %}
             <div class="d-flex justify-content-center">
