@@ -32,12 +32,6 @@
                 </div>
             </div>
             {% endfor %}
-            {% comment %} <div class="d-flex py-2 my-3 bg-secondary text-white">
-                <p class="fs-6 fw-bold mx-5 me-5">Common Tags:</p>
-                {% for tag in tags %}
-                <p class="mx-2 fs-6 border border-danger bg-primary px-4">{{tag.tag_name}}</p>
-                {% endfor %}
-            </div> {% endcomment %}
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-success mb-5 mt-3" id="submitBtn">Next >></button>
             </div>
@@ -74,39 +68,3 @@
     });
   </script>
 {% endblock content %}
-
-{% comment %} <form method="post" id="myForm">
-    {% csrf_token %}
-  
-    <label><input type="checkbox" name="selected_values" value="value1"> Value 1</label><br>
-    <label><input type="checkbox" name="selected_values" value="value2"> Value 2</label><br>
-    <!-- Add more checkboxes as needed -->
-  
-    <label for="other_field">Other Field:</label>
-    <input type="text" id="other_field" name="other_field"><br>
-  
-    <button type="button" id="submitBtn">Submit</button>
-  </form>
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const submitBtn = document.getElementById("submitBtn");
-      const form = document.getElementById("myForm");
-  
-      submitBtn.addEventListener("click", function() {
-        const selectedCheckboxes = form.querySelectorAll('input[type="checkbox"]:checked');
-        const selectedValues = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
-        const selectedValuesStr = selectedValues.join(",");
-        
-        const hiddenInput = document.createElement("input");
-        hiddenInput.type = "hidden";
-        hiddenInput.name = "selected_values";
-        hiddenInput.value = selectedValuesStr;
-  
-        form.appendChild(hiddenInput);
-  
-        // Form submission remains the same
-        form.submit();
-      });
-    });
-  </script> {% endcomment %}
