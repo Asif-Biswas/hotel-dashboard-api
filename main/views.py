@@ -4,7 +4,6 @@ from .forms import LocationForm, SeasonForm, FeatureForm
 from .models import Location, Season, Feature, Category, CategoryTag
 from django.contrib.auth.decorators import login_required
 from django_htmx.http import HttpResponseClientRedirect
-from taggit.models import Tag
 # Create your views here.
 
 @login_required
@@ -47,7 +46,6 @@ def submit_location(request):
             return redirect('create_season', l_id = location.id)
     else:
         form = LocationForm()
-        tags = Tag.objects.all()
         category_with_tags = Category.objects.prefetch_related('categorytag_set')
         context = {'location_form' : form, 'categorys' : category_with_tags}
         return render(request, 'location_form.html', context)
